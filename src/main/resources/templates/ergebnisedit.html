@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/header :: head" />
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div th:if="${administration}">
+		<div class="container">
+			<h2 th:text="${spiel.heimMannschaft.getName()}+':'+${spiel.gastMannschaft.getName()}"></h2>
+		</div>
+		<div class="container" id="containerBody">
+			<div class="alert alert-danger" th:if="${errorMessage}">
+		  		<strong><p th:utext="${errorMessage}"></p></strong>
+			</div>
+			<div class="col-md-12">
+				<p></p>
+				<form id="formName" th:action="@{/ergebnisse/}+${id}" th:object="${spiel}"
+					method="post">
+					<div th:if="${turnierStatus} != Gruppenphase" class="form-group row">
+						<div class="col-2">
+		    				<strong><label for="selection" class="col-form-label">Spielinfo:</label></strong>
+		    			</div>
+	     				<select class="custom-select spielinfo-select" id="selection" th:field="*{spielinfo}">
+							<option 
+								  th:each="spielinfoTyp : ${spielinfoValues}" 
+								  th:text="${spielinfoTyp.getSpielinfoTyp()}"
+								  th:value="${spielinfoTyp}">
+							</option>
+						</select> 
+		 			</div>
+			 		<div id="ergebnisNachNeunzig" class="form-group row" th:unless="${spiel.getSpielinfo()} == ${spielinfoStandard}">
+			 			<div class="col-2">
+			 				<strong><label for="torEingabe" class="col-form-label">Ergebnis 90min:</label></strong>
+			 			</div>
+		   				<div class="form-inline">
+		     				<input id="torEingabe" class="form-control text-center" type="text" th:field="*{toreHeimMannschaftNachNeunzig}" />
+							&nbsp;:&nbsp;
+							<input id="torEingabe" class="form-control text-center" type="text" th:field="*{toreGastMannschaftNachNeunzig}" />
+		    			</div>
+		 			</div>
+		 			<div id="ergebnisNachNeunzig" class="form-group row" style="display:none;">
+		 				<div class="col-2">
+		    				<strong><label for="torEingabe" class="col-form-label">Ergebnis 90min:</label></strong>
+		    			</div>
+		   				<div class="form-inline">
+		     				<input id="torEingabe" class="form-control text-center" type="text" th:field="*{toreHeimMannschaftNachNeunzig}" />
+							&nbsp;:&nbsp;
+							<input id="torEingabe" class="form-control text-center" type="text" th:field="*{toreGastMannschaftNachNeunzig}" />
+		    			</div>
+		 			</div>
+					<div class="form-group row">
+						<div class="col-2">
+		    				<strong><label for="torEingabe" class="col-form-label">Endergebnis:</label></strong>
+		    			</div>
+		   				<div class="form-inline">
+		     				<input id="torEingabe" class="form-control text-center" type="text" th:field="*{toreHeimMannschaft}" />
+							&nbsp;:&nbsp;
+							<input id="torEingabe" class="form-control text-center" type="text" th:field="*{toreGastMannschaft}" />
+		    			</div>
+	 				</div>
+						<input type="hidden" th:field="*{tippbar}" /> 
+						<input type="hidden" th:field="*{gastMannschaft}" /> 
+						<input type="hidden" th:field="*{heimMannschaft}" />
+						<input type="hidden" th:field="*{turnierStatus}" />
+						<input type="hidden" th:field="*{id}" /> 
+						<input type="hidden" th:field="*{vorbei}" /> 
+						<input type="hidden" th:field="*{spielort}" /> 
+						<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+	<script type="text/javascript">
+			$(document).ready(function(){
+			    $('#selection').on('change', function() {
+			      if ( this.value == 'STANDARD')
+			      {
+			        $("#ergebnisNachNeunzig").hide();
+			      }
+			      else
+			      {
+			        $("#ergebnisNachNeunzig").show();
+			      }
+			    });
+			});
+	</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head  th:replace="fragments/header :: head" />
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<h2 th:text="${anzeigeName}"></h2>
+	</div>
+	<div class="container" id="containerBody">
+		<div th:unless="${aktuellerMitspieler.anzeigeName} == ${anzeigeName}">
+			<div class="col-md-12">
+			<table class="table table-hover">
+				<thead>
+					<tr class="active">
+						<th scope="col">Spieltag</th>
+						<th scope="col">Uhrzeit</th>
+						<th scope="col">Heim</th>
+						<th scope="col">Tipp Ergebnis</th>
+						<th scope="col">Gast</th>
+						<th scope="col">Ergebnis</th>
+						<th scope="col">Punkte</th>
+					</tr>
+				</thead>
+				<tr class="" th:classappend="${!tipp.tippbar} ? (${tipp.tipp == ''} ? table-danger : table-success) : ''" th:each="tipp : ${tipps}">
+					<td th:text="${dateHelper.dateToStringDate(dateHelper.stringToDate(tipp.spielbeginn))}"></td>
+					<td th:text="${dateHelper.dateToStringTime(dateHelper.stringToDate(tipp.spielbeginn))}"></td>
+					<td th:text="${tipp.heimMannschaft}"></td>
+					<td>
+						<strong><span class="endErgebnis" th:text="${tipp.tipp}"></span></br></strong>
+						<span id="ergebnisNachNeunzig">
+							<span th:text="${tipp.tippNachNeunzig}"></span>
+						</span>
+					</td>
+					<td th:text="${tipp.gastMannschaft}">id</td>
+					<td>
+						<strong><span class="endErgebnis" th:text="${tipp.ergebnis}"></span></br></strong>
+						<span id="ergebnisNachNeunzig">
+							<span th:text="${tipp.ergebnisNachNeunzig}"></span>
+						</span>
+					</td>
+					<td>
+						<div th:if=${tipp.vorbei} th:text="${tipp.punkte}"></div>
+					</td>						
+				</tr>
+			</table>
+		</div>
+		<ul class="legende">
+			<li><span class="legendeSuccess">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel getippt</span></li>
+			<li><span class="legendeDanger">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel verpasst</span></li>
+		</ul>
+		</div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    $("#profilBild").imagepicker({
+		        hide_select: true
+		    });
+			
+		    var $container = $('.image_picker_selector');
+		    // initialize
+		    $container.imagesLoaded(function () {
+		        $container.masonry({
+		            columnWidth: 30,
+		            itemSelector: '.thumbnail'
+		        });
+		    });
+		});
+	</script>
+</body>
+</html>

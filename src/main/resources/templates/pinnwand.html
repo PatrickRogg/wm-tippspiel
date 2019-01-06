@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/header :: head" />
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<h2>Pinnwand</h2>
+	</div>
+	<div class="container" id="containerBody" >
+	    <div class="row">
+	        <div class="col-md-12">
+		        <div class="alert alert-danger" th:if="${errorMessage}">
+	 				<strong><p th:utext="${errorMessage}"></p></strong>
+				</div>
+	            <div class="new-post pad-bottom">
+	                <form action="#" th:action="@{/pinnwand}" th:object="${neueNachricht}"
+					method="post">
+	                    <div class="form-group">
+	                        <textarea th:field="*{ueberschrift}" class="form-control" placeholder="&Uuml;berschrift"></textarea>
+	                        <p></p>
+	                        <textarea th:field="*{nachricht}" class="form-control" placeholder="Schreibe eine Nachricht..."></textarea>
+	                    </div>
+	                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+	                </form>
+	            </div>
+	 			<ul th:each="n : ${nachrichten}" class="posts list-unstyled">
+	                <li>
+	                	<div class="row">
+	                		<div class="col-md-3 pinnwandinfos">
+			                	<form class="likeButton" th:action="@{/pinnwand/} + ${n.id} + '/like'" method="post">
+				                	<span>
+				                		<span class="mitspielerAnzeigeName" th:text="${n.mitspielerAnzeigeName}"></span><br/>
+				               			<span class="mitspielerProfilBild" th:if="${mitspielerService.findeMitspielerByAnzeigeName(n.mitspielerAnzeigeName) == null}">
+					                		<img id="navbar-image" class="img-thumbnail" 
+					                			src="/profilbilder/default.png" height="80" width="80">
+					                	</span><br/>
+					                	<span class="mitspielerProfilBild" th:unless="${mitspielerService.findeMitspielerByAnzeigeName(n.mitspielerAnzeigeName) == null}">
+					                		<img id="navbar-image" class="img-thumbnail" 
+					                			th:src="${mitspielerService.findeMitspielerByAnzeigeName(n.mitspielerAnzeigeName).profilBild}" height="80" width="80">
+					                	</span><br/>
+					                	<span class="no-pad-bottom date-posted" th:text="${dateHelper.dateToString(n.datum)}"></span><br/><br/>
+					                	<span th:text="${n.likes.size()}"></span>
+										<button th:disabled="${n.getLikes().contains(auth.getName())}" 
+											class="btn btn-danger" type="submit">&#10084;</button>
+									</span>
+				      			</form>
+	                		</div>
+		                	<span class="col-md-9">
+		                		<strong><span class="ueberschriftNachricht" th:text="${n.ueberschrift}"></span></strong><br/>
+		                		<span th:text="${n.nachricht}"></span>
+		                	</span>
+	
+		                    <p class="col-md-12">
+								<button class="btn btn-sm btn-secondary" type="button" data-toggle="collapse" data-target="#collapseKommentare" aria-expanded="false" aria-controls="collapseKommentare">
+								Kommentare anzeigen
+								</button>
+							</p>
+							<div class="collapse col-md-12" id="collapseKommentare">
+								<div class="card card-body">
+									<div th:each="kommentar : ${kommentare}">
+				                    	<div class="comments" th:if="${n} == ${kommentar.nachricht}">
+				                    		<ul class="list-unstyled">
+					                            <li>
+					                                <p>
+					                                    <span class="commentor" th:text="${kommentar.mitspielerAnzeigeName}"></span>
+				                    					<span th:text="${kommentar.kommentar}"></span>
+					                                </p>
+					                                <p class=" no-pad-bottom date-posted">Posted <span th:text="${dateHelper.dateToString(kommentar.datum)}" /></p>
+					                            </li>
+					                        </ul>
+										</div>			
+		                    		</div>
+								</div>
+							</div>
+                		</div>
+                    	<form class="add-comment" action="#" th:action="@{/pinnwand/} + ${n.id}" th:object="${neuerKommentar}"
+						method="post">
+							<div class="form-group row">
+                               	<div class="col-md-10">
+                                   <input type="text" th:field="*{kommentar}"class="form-control" placeholder="Kommentar" />
+                               	</div>
+                               	<div class="col-md-2 text-center">
+                                   <button class="btn btn-sm btn-primary" type="submit">Add Comment</button>
+                               	</div>
+                        	</div>
+                  		</form>
+                   		<p></p>
+	                </li>
+	            </ul>
+	            <div class="row justify-content-center align-items-center">
+                     <a class="btn btn-sm btn-secondary" th:href="@{/pinnwand/alleNachrichten}">Zeige alle Nachrichten</a>
+               </div>
+	        </div>
+	    </div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head th:fragment="head">
+	<title>WM-Tipp</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script src = "http://rvera.github.io/image-picker/image-picker/image-picker.min.js" type = "text/javascript"></script>
+	<script src = "https://imagesloaded.desandro.com/imagesloaded.pkgd.min.js" type = "text/javascript"></script>
+	<script src = "https://masonry.desandro.com/masonry.pkgd.min.js" type = "text/javascript"></script>
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="/custom.css" />
+</head>
+<body>
+	<div th:fragment="header" id="header">
+		<div class="container container-header">
+			<div class="row">
+				<div class="col col-lg-6" >
+					<a href="/">
+						<img alt="Wm-Tipp" src="/Banner.jpeg" />
+					</a>
+				</div>
+				<div class="col col-lg-6" id="countDownTimer" th:if="${naechstesSpiel}">
+					<form class="form-inline" method="GET" th:action="@{/tipps/}+${naechstesSpiel.getId()}">
+						<span class="countdownMannschaften">
+							<strong><span th:text="${naechstesSpiel.heimMannschaft.getName()}"></span></strong>
+							<span>:</span>
+							<strong><span th:text="${naechstesSpiel.gastMannschaft.getName()}"></span></strong>
+							<span>noch </span>
+						</span>
+						<span class="countdown" id="naechstesSpiel">
+							<span id="countdown_Days"></span>
+							<span class="unit">T</span>
+							<span id="countdown_Hours"></span>
+							<span class="unit">S</span>
+							<span id="countdown_Minutes"></span>
+							<span class="unit">M</span>
+							<span id="countdown_Seconds"></span>
+							<span class="unit">S</span>
+						</span>
+						<div th:unless="${administration}">
+							<button type="submit" name="submit" value="value"
+								class="btn btn-primary btn-sm button-toggle">
+								<span aria-hidden="true">Tippen</span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<nav class="navbar navbar-expand-lg">
+			<div class="container">
+				<div class="collapse navbar-collapse" id="navbarNavDropdown">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="/">Rangliste</a>
+						</li>
+						<li class="nav-item" th:unless="${administration}">
+							<a class="nav-link" href="/tipps">Meine Tipps</a>
+						</li>
+						<li class="nav-item" th:if="${administration}">
+							<a class="nav-link" href="/ergebnisse">Ergebnisse</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/tabelle/1">Tabellen</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/statistik">Statistik</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/pinnwand">Pinnwand</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/mitspieler">Mitspieler</a>
+						</li>
+					</ul>
+					<ul class="navbar-nav navbar-right" id="dropdown-navbar">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  	<img id="navbar-image" class="img-thumbnail" th:src="${aktuellerMitspieler.profilBild}" height="40" width="40">
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+						    	<a class="dropdown-item" href="/profil">Profil</a>
+						    	<div class="dropdown-divider"></div>
+						    	<a class="dropdown-item" href="/logout">Sign out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+  			</div>
+		</nav>
+		<p></p>
+	</div>
+	<th:block th:fragment="scripts">
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+		<script src = "http://rvera.github.io/image-picker/image-picker/image-picker.min.js" type = "text/javascript"></script>
+		<script src = "https://imagesloaded.desandro.com/imagesloaded.pkgd.min.js" type = "text/javascript"></script>
+		<script th:inline="javascript">
+			// Update the count down every 100ms
+			var x = setInterval(function() {
+				/*<![CDATA[*/
+			  	var spielbeginn = [[${naechstesSpielSpielbeginn}]];
+				/*]]>*/
+				if(spielbeginn == null) {
+				} else {
+					var countDownDate = new Date(spielbeginn).getTime();
+					
+				    // Get todays date and time
+				    var now = new Date().getTime();
+				    
+				    // Find the distance between now an the count down date
+				    var distance = countDownDate - now;
+				    
+				    // Time calculations for days, hours, minutes and seconds
+				    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+				    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+				    
+				    // Output the result in an element with id="naechstesSpiel"
+				    document.getElementById("countdown_Days").innerHTML = days;
+				    document.getElementById("countdown_Hours").innerHTML = hours;
+				    document.getElementById("countdown_Minutes").innerHTML = minutes;
+				    document.getElementById("countdown_Seconds").innerHTML = seconds;
+				    
+				    if(distance < -500 ) {
+				    	location.reload();
+				    }
+				}
+			}, 100);
+		</script>
+	</th:block>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/header :: head" />
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<h2>Statistik</h2>
+	</div>
+	<div class="container" id="containerBody">
+		<div class="col-xs-12">
+		<p></p>
+			<form action="#" th:action="@{/statistik}" method="post" th:object="${statistikAuswahl}" >
+				<select class="custom-select"  onchange="this.form.submit();" th:field="*{statistikTyp}">
+				  <option 
+					  th:value="${statistikTyp}" 
+					  th:text="${statistikTyp.statistikTyp}" 
+					  th:each="statistikTyp : ${statistikValues}">
+				  </option>
+				</select> 
+			</form>
+			<p></p>
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">#</th>
+						<th scope="col">Name</th>
+						<th scope="col">Punkte</th>
+					</tr>
+				</thead>
+				<tr th:each="eintrag : ${statistik}" th:classappend="${eintrag.anzeigeName} == ${aktuellerMitspieler.getAnzeigeName()} ? font-weight-bold">
+					<td th:text="${eintrag.platzierung}"/>
+					<td><a class="mitspielerlink" th:text="${eintrag.anzeigeName}" th:href="@{/mitspieler/}+${eintrag.anzeigeName}"></a></td>
+					<td th:text="${eintrag.punkte} "/>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+</body>
+</html>

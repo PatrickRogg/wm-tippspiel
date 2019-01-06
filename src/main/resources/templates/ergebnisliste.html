@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/header :: head" />
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<h2>Ergebnisse</h2>
+	</div>
+	<div th:if="${administration}" class="container" id="containerBody">
+		<div class="alert alert-success" th:if="${successMessage}">
+  			<strong><p th:utext="${successMessage}"></p></strong>
+		</div>
+		<div class="alert alert-danger" th:if="${errorMessage}">
+  			<strong><p th:utext="${errorMessage}"></p></strong>
+		</div>
+		<div class="col-md-12">
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">Turnierstatus</th>
+						<th scope="col">Spieltag</th>
+						<th scope="col">Uhrzeit</th>
+						<th scope="col">Heim</th>
+						<th scope="col">Ergebnis</th>
+						<th scope="col">Gast</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+
+				<tr class="" th:classappend="${!spiel.tippbar} ? (${spiel.ergebnis == '--:--'} ? table-danger : table-success) : ''" th:each="spiel : ${spiele}">
+					<td th:text="${spiel.turnierStatus.getTurnierStatus()}" />
+					<td th:text="${dateHelper.dateToStringDate(spiel.getSpielbeginn())}" />
+					<td th:text="${dateHelper.dateToStringTime(spiel.getSpielbeginn())}" />
+					<td th:text="${spiel.heimMannschaft.getName()}" />
+					<td>
+						<strong><span class="endErgebnis" th:text="${spiel.ergebnis}"></span></br></strong>
+						<span id="ergebnisNachNeunzig">
+							<span th:text="${spiel.ergebnisNachNeunzig}"></span>
+						</span>
+					</td>
+					<td th:text="${spiel.gastMannschaft.getName()}" />
+					<td>
+						<form method="GET" th:action="@{/ergebnisse/}+${spiel.id}">
+							<button th:disabled="${spiel.tippbar}" type="submit" name="submit" value="value"
+								class="btn btn-primary btn-sm button-toggle">
+								<span aria-hidden="true">Ergebnis</span>
+							</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+			<ul class="legende">
+				<li><span class="legendeSuccess">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel vorbei und Ergebnis eingetragen</span></li>
+				<li><span class="legendeDanger">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel vorbei und Ergebnis fehlt</span></li>
+				<li><span class="legendeDefault">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel hat noch nicht angefangen</span></li>
+			</ul>
+		</div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+</body>
+</html>

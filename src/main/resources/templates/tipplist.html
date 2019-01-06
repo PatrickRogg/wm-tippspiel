@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/header :: head" />
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<h2>Meine Tipps</h2>
+	</div>
+	<div th:unless="${administration}" class="container" id="containerBody">
+		<p></p>
+		<div class="alert alert-danger" th:if="${errorMessage}">
+	  		<strong><p th:utext="${errorMessage}"></p></strong>
+		</div>
+		<div class="alert alert-success" th:if="${successMessage}">
+	  		<strong><p th:utext="${successMessage}"></p></strong>
+		</div>
+		<div class="col-md-12">
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">Turnierstatus</th>
+						<th scope="col">Spieltag</th>
+						<th scope="col">Uhrzeit</th>
+						<th scope="col">Heim</th>
+						<th scope="col">Tipp Ergebnis</th>
+						<th scope="col">Gast</th>
+						<th scope="col"></th>
+						<th scope="col">Ergebnis</th>
+						<th scope="col">Punkte</th>
+					</tr>
+				</thead>
+				<tr class="" th:classappend="${tipp.tippbar} ? (${tipp.tipp == ''} ? table-danger : table-success) : ''" th:each="tipp : ${tipps}">
+					<td th:text="${tipp.turnierStatus}" />
+					<td th:text="${dateHelper.dateToStringDate(dateHelper.stringToDate(tipp.spielbeginn))}"></td>
+					<td th:text="${dateHelper.dateToStringTime(dateHelper.stringToDate(tipp.spielbeginn))}"></td>
+					<td th:text="${tipp.heimMannschaft}"></td>
+					<td>
+						<strong><span class="endErgebnis" th:text="${tipp.tipp}"></span></br></strong>
+						<span id="ergebnisNachNeunzig">
+							<span th:text="${tipp.tippNachNeunzig}"></span>
+						</span>
+					</td>
+					<td th:text="${tipp.gastMannschaft}">id</td>
+					<td>
+						<form method="GET" th:action="@{/tipps/}+${tipp.spielId}">
+							<button th:disabled="${!tipp.tippbar}" type="submit" name="submit" value="value"
+								class="btn btn-primary btn-sm button-toggle">
+								<span aria-hidden="true">Tippen</span>
+							</button>
+						</form></td>
+					<td>
+						<strong><span class="endErgebnis" th:text="${tipp.ergebnis}"></span></br></strong>
+						<span id="ergebnisNachNeunzig">
+							<span th:text="${tipp.ergebnisNachNeunzig}"></span>
+						</span>
+					</td>
+					<td>
+						<div th:if=${tipp.vorbei} th:text="${tipp.punkte}"></div>
+					</td>						
+				</tr>
+			</table>
+			<ul class="legende">
+				<li><span class="legendeSuccess">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel tippbar und Tipp abgegeben</span></li>
+				<li><span class="legendeDanger">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel tippbar, aber kein Tipp abgegeben</span></li>
+				<li><span class="legendeDefault">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel vorbei</span></li>
+			</ul>
+		</div>
+	</div>
+		<th:block th:replace="fragments/header :: scripts" />
+		
+</body>
+</html>

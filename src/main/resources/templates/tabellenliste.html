@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/header :: head" />
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<h2>Rangliste</h2>
+	</div>
+	<div class="container" id="containerBody">
+		<p></p>
+		<form action="#" th:action="@{/tabelle/}+${tabellenId}" th:object="${gruppe}"
+			method="post">
+			<select class="custom-select" th:field="*{gruppenTyp}" onchange="this.form.submit();">
+				<option 
+					  th:each="gruppeTyp : ${gruppeValues}" 
+					  th:text="${gruppeTyp.getGruppe()}"
+					  th:value="${gruppeTyp}">
+				</option>
+			</select>
+		</form>
+		<p></p>
+		<div th:if="${administration}">
+		<div class="col-md-12">
+			<p></p>
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">Turnierstatus</th>
+						<th scope="col">Spieltag</th>
+						<th scope="col">Uhrzeit</th>
+						<th scope="col">Heim</th>
+						<th scope="col">Ergebnis</th>
+						<th scope="col">Gast</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tr class="" th:classappend="${!spiel.tippbar} ? (${spiel.ergebnis == '--:--'} ? table-danger : table-success) : ''" th:each="spiel : ${spieleDerGruppe}">
+					<td th:text="${spiel.turnierStatus.getTurnierStatus()}" />
+					<td th:text="${dateHelper.dateToStringDate(spiel.getSpielbeginn())}" />
+					<td th:text="${dateHelper.dateToStringTime(spiel.getSpielbeginn())}" />
+					<td th:text="${spiel.heimMannschaft.getName()}" />
+					<td>
+						<strong><span class="endErgebnis" th:text="${spiel.ergebnis}"></span></br></strong>
+						<span id="ergebnisNachNeunzig">
+							<span th:text="${spiel.ergebnisNachNeunzig}"></span>
+						</span>
+					</td>
+					<td th:text="${spiel.gastMannschaft.getName()}" />
+					<td>
+						<form method="GET" th:action="@{/ergebnisse/}+${spiel.id}">
+							<button th:disabled="${spiel.tippbar}" type="submit" name="submit" value="value"
+								class="btn btn-primary btn-sm button-toggle">
+								<span aria-hidden="true">Ergebnis</span>
+							</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+			<ul class="legende">
+				<li><span class="legendeSuccess">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel vorbei und Ergebnis eingetragen</span></li>
+				<li><span class="legendeDanger">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel vorbei und Ergebnis fehlt</span></li>
+				<li><span class="legendeDefault">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel hat noch nicht angefangen</span></li>
+			</ul>
+		</div>
+	</div>
+	<div th:unless="${administration}">
+		<div class="col-md-12">
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">Spieltag</th>
+						<th scope="col">Uhrzeit</th>
+						<th scope="col">Heim</th>
+						<th scope="col">Tipp Ergebnis</th>
+						<th scope="col">Gast</th>
+						<th scope="col"></th>
+						<th scope="col">Ergebnis</th>
+						<th scope="col">Punkte</th>
+					</tr>
+				</thead>
+				<tr class="" th:classappend="${tipp.tippbar} ? (${tipp.tipp == ''} ? table-danger : table-success) : ''" th:each="tipp : ${tippsDerGruppe}">
+					<td th:text="${dateHelper.dateToStringDate(dateHelper.stringToDate(tipp.spielbeginn))}"></td>
+					<td th:text="${dateHelper.dateToStringTime(dateHelper.stringToDate(tipp.spielbeginn))}"></td>
+					<td th:text="${tipp.heimMannschaft}"></td>
+					<td>
+						<strong><span class="endErgebnis" th:text="${tipp.tipp}"></span></br></strong>
+						<span id="ergebnisNachNeunzig">
+							<span th:text="${tipp.tippNachNeunzig}"></span>
+						</span>
+					</td>
+					<td th:text="${tipp.gastMannschaft}">id</td>
+					<td><form method="GET" th:action="@{/tipps/}+${tipp.spielId}">
+							<button th:disabled="${!tipp.tippbar}" type="submit" name="submit" value="value"
+								class="btn btn-primary btn-sm button-toggle">
+								<span aria-hidden="true">Tippen</span>
+							</button>
+						</form></td>
+					<td>
+						<strong><span class="endErgebnis" th:text="${tipp.ergebnis}"></span></br></strong>
+						<span id="ergebnisNachNeunzig">
+							<span th:text="${tipp.ergebnisNachNeunzig}"></span>
+						</span>
+					</td>
+					<td>
+						<div th:if=${tipp.vorbei} th:text="${tipp.punkte}"></div>
+					</td>						
+				</tr>
+			</table>
+			<ul class="legende">
+				<li><span class="legendeSuccess">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel tippbar und Tipp abgegeben</span></li>
+				<li><span class="legendeDanger">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel tippbar, aber kein Tipp abgegeben</span></li>
+				<li><span class="legendeDefault">&nbsp;&nbsp;&nbsp;</span><span class="">Spiel vorbei</span></li>
+			</ul>
+			</div>
+		</div>
+		<div th:if="${kOPhase} == false">
+			<div class="col-md-12">
+				<p></p>
+				<table class="table table-hover">
+					<thead>
+						<tr class="table-active">
+							<th scope="col">#</th>
+							<th scope="col"></th>
+							<th scope="col">Team</th>
+							<th class="text-center" scope="col">Spiele</th>
+							<th class="text-center" scope="col">Siege</th>
+							<th class="text-center" scope="col">Unentschieden</th>
+							<th class="text-center" scope="col">Niederlagen</th>
+							<th class="text-center" scope="col">Tore</th>
+							<th class="text-center" scope="col">Gegentore</th>
+							<th class="text-center" scope="col">Tordifferenz</th>
+							<th class="text-center" scope="col">Punkte</th>
+						</tr>
+					</thead>
+					<tr class="" th:each="eintrag : ${tabelle}" th:classappend="${eintrag.platzierung < 3} ? table-success : table-danger">
+						<td th:text="${eintrag.platzierung}"/>
+						<td><img th:src="@{${eintrag.teamWappen}}" /></td>
+						<td th:text="${eintrag.teamName}"/>
+						<td class="text-center" th:text="${eintrag.spiele}"/>
+						<td class="text-center" th:text="${eintrag.siege}"/>
+						<td class="text-center" th:text="${eintrag.unentschieden}"/>
+						<td class="text-center" th:text="${eintrag.niederlagen}"/>
+						<td class="text-center" th:text="${eintrag.tore}"/>
+						<td class="text-center" th:text="${eintrag.gegentore}"/>
+						<td class="text-center" th:text="${eintrag.torDifferenz}"/>
+						<td class="text-center" th:text="${eintrag.punkte} "/>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+</body>
+</html>

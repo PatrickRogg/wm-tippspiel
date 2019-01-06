@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head  th:include="fragments/header :: head">
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<h2 th:text="${aktuellerMitspieler.anzeigeName}"></h2>
+	</div>
+	<div class="container" id="containerBody">
+		<div class="row">
+			<div class="col-md-3">
+				<img class="img-thumbnail" th:src="${aktuellerMitspieler.profilBild}">
+				<p></p>
+				<table class="table table-hover" th:unless="${administration}">
+					<tr>
+						<td>Account bearbeiten</td>
+						<td>
+							<form method="GET" th:action="@{/mitspieler/}+${aktuellerMitspieler.anzeigeName}+'/edit'">
+								<button type="submit" name="submit" value="value"
+									class="btn btn-primary btn-sm">
+									<span aria-hidden="true">Ändern</span>
+								</button>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>Account l&#246;schen</td>
+						<td>
+							<form method="POST" th:action="@{/mitspieler/}+${aktuellerMitspieler.anzeigeName}+'/delete'">
+								<button type="submit" name="submit" value="value"
+									class="btn btn-danger btn-sm">
+									<span aria-hidden="true">L&#246;schen</span>
+								</button>
+							</form>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-8">
+				<p></p>
+				<form method="POST" th:action="@{/mitspieler/}+${aktuellerMitspieler.anzeigeName}+'/edit/profilbild'" th:object="${aktuellerMitspieler}">
+					<select th:field="*{profilBild}" class="image-picker" onchange="this.form.submit();">
+					    <option data-img-src="/profilbilder/default.png" value="/profilbilder/default.png">default</option>
+					    <option data-img-src="/profilbilder/profilbildEins.jpg" value="/profilbilder/profilbildEins.jpg">bild1</option>
+					    <option data-img-src="/profilbilder/profilbildZwei.jpg" value="/profilbilder/profilbildZwei.jpg">bild2</option>
+					    <option data-img-src="/profilbilder/profilbildDrei.jpg" value="/profilbilder/profilbildDrei.jpg">bild3</option>
+					    <option data-img-src="/profilbilder/profilbildVier.jpg" value="/profilbilder/profilbildVier.jpg">bild4</option>
+					    <option data-img-src="/profilbilder/profilbildFuenf.jpg" value="/profilbilder/profilbildFuenf.jpg">bild5</option>
+					    <option data-img-src="/profilbilder/profilbildSechs.jpg" value="/profilbilder/profilbildSechs.jpg">bild6</option>
+					    <option data-img-src="/profilbilder/profilbildSieben.jpg" value="/profilbilder/profilbildSieben.jpg">bild7</option>
+					    <option data-img-src="/profilbilder/profilbildAcht.jpg" value="/profilbilder/profilbildAcht.jpg">bild8</option>
+					    <option data-img-src="/profilbilder/profilbildNeun.jpg" value="/profilbilder/profilbildNeun.jpg">bild9</option>
+					</select>
+				</form>
+			</div>
+		</div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    $("#profilBild").imagepicker({
+		        hide_select: true
+		    });
+			
+		    var $container = $('.image_picker_selector');
+		    // initialize
+		    $container.imagesLoaded(function () {
+		        $container.masonry({
+		            columnWidth: 30,
+		            itemSelector: '.thumbnail'
+		        });
+		    });
+		});
+	</script>
+</body>
+</html>

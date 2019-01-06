@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head  th:replace="fragments/header :: head" />
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<h2>Mitspieler</h2>
+	</div>
+	<div th:if="${administration}" class="container" id="containerBody">
+		<div class="alert alert-success" th:if="${successMessage}">
+	  		<strong><p th:utext="${successMessage}"></p></strong>
+		</div>
+		<div class="alert alert-danger" th:if="${errorMessage}">
+	  		<strong><p th:utext="${errorMessage}"></p></strong>
+		</div>
+		<div class="col-xs-12">
+			<p></p>
+			<form method="GET" th:action="@{/mitspieler/create/admin}">
+				<button type="submit" name="submit" value="value"
+					class="btn btn-success">Neuer Mitspieler</button>
+			</form>
+			<p></p>
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">Name</th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tr th:each="m : ${mitspieler}">
+					<td><a class="mitspielerlink" th:text="${m.anzeigeName}" th:href="@{/mitspieler/}+${m.anzeigeName}"></a></td>
+					<td>
+						<form method="GET" th:action="@{/mitspieler/}+${m.login}+'/edit/admin'">
+							<button type="submit" name="submit" value="value"
+								class="btn btn-primary btn-sm button-toggle">
+								<span aria-hidden="true">Ändern</span>
+							</button>
+						</form></td>
+					<td>
+					<td>
+						<form method="POST" th:action="@{/mitspieler/}+${m.login}+'/delete/admin'">
+							<button type="submit" name="submit" value="value"
+								class="btn btn-danger btn-sm button-toggle">
+								<span aria-hidden="true">L&#246;schen</span>
+							</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div th:unless="${administration}" class="container" id="containerBody">
+		<div class="col-xs-2">
+			<table class="table table-hover">
+				<tr th:each="m : ${mitspieler}">
+					<td><a class="mitspielerlink" th:text="${m.anzeigeName}" th:href="@{/mitspieler/}+${m.anzeigeName}"></a></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+</body>
+</html>

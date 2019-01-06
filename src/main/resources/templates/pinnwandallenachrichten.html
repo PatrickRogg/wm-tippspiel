@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head th:include="fragments/header :: head">
+	<link rel="stylesheet" href="/css/pinnwand.css" />
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+		<div class="container">
+		<h2>Pinnwand  - Alle Nachrichten</h2>
+	</div>
+	<div class="container" id="containerBody" >
+	    <div class="row">
+	        <div class="col-md-12">
+	 			<ul th:each="n : ${nachrichten}" class="posts list-unstyled">
+	                <li>
+		                <p class="col-md-10">
+		                	<span class="col-md-2">
+		                		<span class="mitspielerAnzeigeName" th:text="${n.mitspielerAnzeigeName}"></span><br/>
+		               			<span class="mitspielerProfilBild" th:if="${mitspielerService.findeMitspielerByAnzeigeName(n.mitspielerAnzeigeName) == null}">
+			                		<img id="navbar-image" class="img-thumbnail" 
+			                			src="/profilbilder/default.png" height="80" width="80">
+			                	</span><br/>
+			                	<span class="mitspielerProfilBild" th:unless="${mitspielerService.findeMitspielerByAnzeigeName(n.mitspielerAnzeigeName) == null}">
+			                		<img id="navbar-image" class="img-thumbnail" 
+			                			th:src="${mitspielerService.findeMitspielerByAnzeigeName(n.mitspielerAnzeigeName).profilBild}" height="80" width="80">
+			                	</span><br/>
+			                	<span class="no-pad-bottom date-posted" th:text="${dateHelper.dateToString(n.datum)}" /></span>
+		                	</span>
+		                	<span class="col-md-8">
+		                		<strong><span class="ueberschriftNachricht" th:text="${n.ueberschrift}"></span></strong><br/>
+		                		<span th:text="${n.nachricht}"></span>
+		                	</span>
+		                </p>
+		                <p class="col-md-2">
+		                	&#10084;<span th:text="${n.likes.size()}"></span>
+		                </p>
+						<p>
+							<button class="btn btn-sm btn-secondary" type="button" data-toggle="collapse" data-target="#collapseKommentare" aria-expanded="false" aria-controls="collapseKommentare">
+							Kommentare anzeigen
+							</button>
+						</p>
+						<div class="collapse" id="collapseKommentare">
+							<div class="card card-body">
+								<div class="col-md-12" th:each="kommentar : ${kommentare}">
+			                    	<div class="comments" th:if="${n} == ${kommentar.nachricht}">
+			                    		<ul class="list-unstyled">
+				                            <li>
+				                                <p>
+				                                    <span class="commentor" th:text="${kommentar.mitspielerAnzeigeName}"></span>
+			                    					<span th:text="${kommentar.kommentar}"></span>
+				                                </p>
+				                                <p class=" no-pad-bottom date-posted">Posted <span th:text="${dateHelper.dateToString(kommentar.datum)}" /></p>
+				                            </li>
+				                        </ul>
+									</div>			
+	                    		</div>
+							</div>
+						</div>
+                   		<p></p>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	</div>
+	<th:block th:replace="fragments/header :: scripts" />
+</body>
+</html>
