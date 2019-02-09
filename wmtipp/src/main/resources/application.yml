@@ -13,14 +13,4 @@ wmtipp:
   admin:
     login: admin
     password: blub
-
----
-spring:
-  profiles: filedb
-  datasource:
-    url: jdbc:h2:file:c:\users\katz.bastian\test.db
-    username: sa
-    password: 
-    driverClassName: org.h2.Driver
-  jpa.hibernate.ddl-auto: update
   
