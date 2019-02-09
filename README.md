@@ -1,7 +1,28 @@
-# Football WC-Bet Application
+# Football(Soccer) World Cup 2018 Bet Application
 
->This Application can be used to bet on the Football World-Cup 2018.
+This Application was created to bet on the Football World-Cup 2018.
 
-Start by Running the wmTippApplication Class
+## Getting started
 
-If you want to use this Application for future World-Cups just swap out the File "ImportDaten" and add the Games and Teams of the next World-Cup
+### Running Example
+* Download the zip or clone the Git repository.
+* Unzip the zip file (if you downloaded one)
+* Open Command Prompt and Change directory (cd) to folder containing pom.xml
+* Open Eclipse File -> Import -> Existing Maven Project -> Navigate to the folder where you unzipped the zip
+* Select the right project. Choose the Spring Boot Application file (search for @WmtippApplication.java) Right Click on the file and Run as Java Application
+
+___
+
+## Customizability
+* Change the Admin Login and Password in die application.yml file
+* Swap out the ImportDaten.xlsx with the new Games from the WorldCup
+
+## Used Technology
+
+* Frontend: HTML, CSS, JavaScript
+* Backend: Java
+* Frameworks: Spring-Boot with JPA and Hibernate
+
+## Authors
+* Patrick Rogg and Mi Nguyen
+
