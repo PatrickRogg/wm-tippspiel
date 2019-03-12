@@ -3,6 +3,28 @@
 We created this application in our Software Engineering 2 lecture. 
 With this application it is possible to bet on the FIFA Football World-Cup 2018 and it can be reused for future World Cups by changing the ImportData file.
 
+## Pictures of the application
+
+1. Games of Worldcup
+
+![Games of Worldcup-img](https://i.imgur.com/mnACJaM.png)
+
+
+2.Table
+
+![Games-img](https://i.imgur.com/8dmZtDJ.png)
+
+
+3. Pinnboard users can write on
+
+![Pinnboard-img](https://i.imgur.com/P5kIWxQ.png)
+
+
+4. Ranking of Users
+
+![Ranking-img](https://i.imgur.com/MfygSr3.png)
+
+
 ## Getting started
 
 ### Running Example
