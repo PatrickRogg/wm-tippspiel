@@ -1,6 +1,7 @@
 # Football(Soccer) World Cup 2018 Bet Application
 
-This Application was created to bet on the Football World-Cup 2018.
+We created this application in our Software Engineering 2 lecture. 
+With this application it is possible to bet on the FIFA Football World-Cup 2018 and it can be reused for future World Cups by changing the ImportData file.
 
 ## Getting started
 
@@ -13,7 +14,7 @@ This Application was created to bet on the Football World-Cup 2018.
 
 ## Customizability
 * Change the Admin Login and Password in die application.yml file
-* Swap out the ImportDaten.xlsx with the new Games from the WorldCup
+* Swap out the ImportDaten.xlsx and put in your own games you want to bet on
 
 ## Used Technology
 
