@@ -1,7 +1,6 @@
-# Football(Soccer) World Cup 2018 Bet Application
+# Football Betting Application
 
-We created this application in our Software Engineering 2 lecture. 
-With this application it is possible to bet on the FIFA Football World-Cup 2018 and it can be reused for future World Cups by changing the ImportData file.
+This application was developed as part of the Software Engineering Lecture. The Soccer Betting application makes it possible to bet on FIFA World cup games with your friends. It was created for the FIFA Football World-Cup 2018, but it can be reused for future World Cups by importing the games of the current World Cup.
 
 ## Getting started
 
