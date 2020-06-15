@@ -2,26 +2,13 @@
 
 This application was developed as part of the Software Engineering Lecture. The Soccer Betting application makes it possible to bet on FIFA World cup games with your friends. It was created for the FIFA Football World-Cup 2018, but it can be reused for future World Cups by importing the games of the current World Cup.
 
-## Getting started
-
-### Running Example
-* Download the zip or clone the Git repository.
-* Unzip the zip file (if you downloaded one)
-* Open Command Prompt and Change directory (cd) to folder containing pom.xml
-* Open Eclipse File -> Import -> Existing Maven Project -> Navigate to the folder where you unzipped the zip
-* Select the right project. Choose the Spring Boot Application file (search for @WmtippApplication.java) Right Click on the file and Run as Java Application
-
-## Customizability
-* Change the Admin Login and Password in die application.yml file
-* Swap out the ImportDaten.xlsx and put in your own games you want to bet on
-
-## Used Technology
+# Used Technology
 
 * Frontend: HTML, CSS, JavaScript
 * Backend: Java
 * Frameworks: Spring-Boot with JPA and Hibernate
 
-## Pictures of the application
+# Pictures of the application
 
 1. Games of Worldcup
 
@@ -42,6 +29,19 @@ This application was developed as part of the Software Engineering Lecture. The 
 
 ![Ranking-img](https://i.imgur.com/MfygSr3.png)
 
+
+## Getting started
+
+### Running Example
+* Download the zip or clone the Git repository.
+* Unzip the zip file (if you downloaded one)
+* Open Command Prompt and Change directory (cd) to folder containing pom.xml
+* Open Eclipse File -> Import -> Existing Maven Project -> Navigate to the folder where you unzipped the zip
+* Select the right project. Choose the Spring Boot Application file (search for @WmtippApplication.java) Right Click on the file and Run as Java Application
+
+## Customizability
+* Change the Admin Login and Password in die application.yml file
+* Swap out the ImportDaten.xlsx and put in your own games you want to bet on
 
 ## Authors
 * Patrick Rogg and Mi Nguyen
